@@ -34,16 +34,14 @@ public class ToolBarInit extends JToolBar implements ActionListener{
 	private void initialize() {
 		this.setBounds(100, 100, 450, 300);
 		
-		text_fila = new JTextField();	
+		text_fila = new JTextField();
 		text_col = new JTextField();
 		
 		botonCrear = new JButton();	botonCrear.setText("Crear");	botonCrear.addActionListener(this);
-		lbl_fila = new JLabel();	lbl_fila.setText("Filas:");
-		lbl_col = new JLabel();		lbl_col.setText("Columnas:");
+		lbl_fila = new JLabel();	lbl_fila.setText("Filas: ");
+		lbl_col = new JLabel();		lbl_col.setText("Columnas: ");
 		
 		this.setBounds(10,10,300,30);
-		text_fila.setBounds(0,0,40,30);
-		text_col.setBounds(0,0,40,30);
 		this.add(lbl_fila);		this.add(text_fila);
 		this.add(lbl_col);		this.add(text_col);
 		this.add(botonCrear);
