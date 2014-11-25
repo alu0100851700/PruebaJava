@@ -2,15 +2,12 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
 
 
 public class Ventana extends JFrame implements ActionListener{
 	private ToolBarInit barra;
 	private Matrix matriz;
-	private JButton Boton;
 	/**
 	 * Launch the application.
 	 */
