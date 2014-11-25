@@ -42,7 +42,8 @@ public class ToolBarInit extends JToolBar implements ActionListener{
 		lbl_col = new JLabel();		lbl_col.setText("Columnas:");
 		
 		this.setBounds(10,10,300,30);
-		
+		text_fila.setBounds(0,0,40,30);
+		text_col.setBounds(0,0,40,30);
 		this.add(lbl_fila);		this.add(text_fila);
 		this.add(lbl_col);		this.add(text_col);
 		this.add(botonCrear);
