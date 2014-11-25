@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 
 
 
-public class Matrix extends JPanel implements ActionListener{
+public class Matrix extends JPanel {
 
 	private Casilla[][] botones;
 	int ancho;
@@ -33,7 +33,6 @@ public class Matrix extends JPanel implements ActionListener{
 		for(int i = 0; i < filas; i ++){	
 			for(int j = 0; j < columnas; j ++){
 				botones[i][j] = new Casilla(ancho/num_fil,alto/num_col);
-				botones[i][j].addActionListener(this);
 				this.add(botones[i][j]);}}
 		
 		paintComponents(getGraphics());
@@ -41,13 +40,4 @@ public class Matrix extends JPanel implements ActionListener{
 		
 		//Cerramos el constructor
 	}
-	
-	
-		//Metodo para cambiar la imagen de los iconos.
-		//Parametros: posicion fila, posicion columnas.
-	public void actionPerformed(ActionEvent evento) {
-		Casilla button = (Casilla) evento.getSource();
-		button.actualizar();	
-	}
-
 }	
