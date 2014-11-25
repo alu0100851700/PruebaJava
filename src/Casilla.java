@@ -10,6 +10,8 @@ public class Casilla extends JButton {
 	ImageIcon stone = new ImageIcon("stone.jpg");
 	private int a=0;
 	private int ancho, alto;
+	
+	public boolean robot = false;
 	/**
 	 * Create the Button.
 	 */
