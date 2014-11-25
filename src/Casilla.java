@@ -33,9 +33,6 @@ public class Casilla extends JButton {
 			a++;
 		}
 	}
-	
-	
-	
 		//Metodo para cambiar la imagen de los iconos.
 		//Parametros: posicion fila, posicion columnas.
 

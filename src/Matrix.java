@@ -15,7 +15,8 @@ public class Matrix extends JPanel implements ActionListener{
 	
 	Matrix(int num_fil, int num_col)
 	{
-		setBounds(0,0,700,700);
+		setBounds(0,0,1300,700);
+		this.getMaximumSize();
 		setVisible(true);
 		filas = num_fil;
 		columnas = num_col;
