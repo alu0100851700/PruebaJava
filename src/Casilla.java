@@ -19,8 +19,8 @@ public class Casilla extends JButton implements ActionListener{
 	private boolean robot = false;
 	private boolean rehen = false;
 	private boolean visitado = false;
-	
-	private boolean ponerRobot = false;
+
+	public boolean ponerRobot = false;
 	
 	// Constructor
 	public Casilla(int anch, int alt) {
@@ -50,29 +50,37 @@ public class Casilla extends JButton implements ActionListener{
 	
 	public void actObstaculo()
 	{
-		if( obstaculo == false )
+		if( obstaculo == false && robot == false)
 		{
 		setIcon(new ImageIcon(bomba.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 		obstaculo = true;
 		}
-		else if( obstaculo == true )
+		else if( obstaculo == false && robot == true )
 			{
 				setIcon(new ImageIcon(img.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 				obstaculo = false;
+				robot = false;
 			}
+		else if( obstaculo == true )
+		{
+			setIcon(new ImageIcon(img.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
+			obstaculo = false;
+		}
 	}
 	
 	public void actRobot()
 	{
-		if( robot == false )
+		if(( robot == false ) && ( ponerRobot == true ))
 		{
 		setIcon(new ImageIcon(stone.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 		robot = true;
+		ponerRobot = false;
 		}
-		else if( robot == true )
+		else if(( robot == true )&& ( ponerRobot == false ))
 			{
 				setIcon(new ImageIcon(img.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 				robot = false;
+				ponerRobot = true;
 			}
 	}
 	
@@ -80,8 +88,6 @@ public class Casilla extends JButton implements ActionListener{
 	
 	// "Escucha"
 	public void actionPerformed(ActionEvent evento) {
-		
-		
 		JButton button = (JButton) evento.getSource();
 		if ( ponerRobot == false )
 			actObstaculo();
