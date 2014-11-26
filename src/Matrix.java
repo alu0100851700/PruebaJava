@@ -17,10 +17,11 @@ public class Matrix extends JPanel implements ActionListener{
 	int filas, columnas;
 	
 	public boolean ponerRobot = false;
+	public boolean ponerRehen = false;
 	
 	Matrix(int num_fil, int num_col)
 	{
-		setBounds(0,0,1300,700);
+		setBounds(0,0,700,700);
 		this.getMaximumSize();
 		setVisible(true);
 		filas = num_fil;
@@ -37,7 +38,7 @@ public class Matrix extends JPanel implements ActionListener{
 		botones = new Casilla[filas][columnas];
 		for(int i = 0; i < filas; i ++){	
 			for(int j = 0; j < columnas; j ++){
-				botones[i][j] = new Casilla(ancho/num_fil,alto/num_col);
+				botones[i][j] = new Casilla((int)1.1*ancho/num_fil,alto/num_col);
 				botones[i][j].addActionListener(this);
 				this.add(botones[i][j]);}}
 		
@@ -47,11 +48,37 @@ public class Matrix extends JPanel implements ActionListener{
 		//Cerramos el constructor
 	}
 	
+	private boolean robot(){
+		for(int i = 0; i < filas; i ++){	
+			for(int j = 0; j < columnas; j ++){
+					if(botones[i][j].robot == true){
+						ponerRobot = false;
+						return true;
+					}
+				}}
+		return false;
+	}
+	
+	private boolean rehen(){
+		for(int i = 0; i < filas; i ++){	
+			for(int j = 0; j < columnas; j ++){
+					if(botones[i][j].rehen == true){
+						ponerRehen = false;
+						return true;
+					}
+				}}
+		return false;
+	}
+	
 	public void actionPerformed(ActionEvent evento) {
-		if(ponerRobot==true){
 		Casilla button = (Casilla) evento.getSource();
+		if(ponerRobot==true && !robot()){
 		button.ponerRobot = true;
 		ponerRobot = false;
 		}
+		else if(ponerRehen==true && !rehen()){
+			button.ponerRehen = true;
+			ponerRehen = false;
+			}
 	}
 }	

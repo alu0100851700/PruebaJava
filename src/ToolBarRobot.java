@@ -9,6 +9,7 @@ import javax.swing.JToolBar;
 public class ToolBarRobot extends JToolBar{
 
 	public JButton crearRobot;
+	public JButton crearRehen;
 
 	// Constructor
 	public ToolBarRobot() {
@@ -17,7 +18,11 @@ public class ToolBarRobot extends JToolBar{
 		crearRobot = new JButton();		
 		crearRobot.setText("Poner Robot");
 		
-		this.setBounds(10,10,300,30);
-		this.add(crearRobot);
+		crearRehen = new JButton();		
+		crearRehen.setText("Poner Rehen");
+		
+		setBounds(10,10,300,30);
+		add(crearRobot);
+		add(crearRehen);
 	}
 }

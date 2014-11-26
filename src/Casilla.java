@@ -1,69 +1,62 @@
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.plaf.synth.SynthButtonUI;
 
 
 public class Casilla extends JButton implements ActionListener{
 	
-	ImageIcon bomba = new ImageIcon("lava.jpg");
-	ImageIcon img = new ImageIcon("piedra.jpg");
-	ImageIcon stone = new ImageIcon("stone.jpg");
-	private int a=0;
+	ImageIcon mina = new ImageIcon("mina.jpg");
+	ImageIcon arena = new ImageIcon("arena.jpg");
+	ImageIcon rehen1 = new ImageIcon("rehen1.jpg");
+	ImageIcon robot1 = new ImageIcon("robot1.jpg");
 	private int ancho, alto;
 	
 	// Variables de control
 	private boolean obstaculo = false;
-	private boolean robot = false;
-	private boolean rehen = false;
+	public boolean robot = false;
+	public boolean rehen = false;
 	private boolean visitado = false;
 
 	public boolean ponerRobot = false;
-	
+	public boolean ponerRehen = false;
 	// Constructor
 	public Casilla(int anch, int alt) {
-		this.addActionListener(this);
+		addActionListener(this);
 		ancho = anch;	alto = alt;
-		this.setIcon(new ImageIcon(img.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
+		Dimension newDimension =  new Dimension(ancho,alto);
+	    setPreferredSize(newDimension);
+		setIcon(new ImageIcon(arena.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
+		
 	}
 
-	/*public void actualizar(){
-		if(a%3 == 0){
-			this.setIcon(new ImageIcon(bomba.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
-			a++;
-		}
-		else if(a%3 == 1){
-			this.setIcon(new ImageIcon(stone.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
-			a++;
-		}
-		else if(a%3 == 2){
-			this.setIcon(new ImageIcon(img.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
-			a++;
-		}
-	}*/
-		//Metodo para cambiar la imagen de los iconos.
-		//Parametros: posicion fila, posicion columnas.
-	
+
 	
 	
 	public void actObstaculo()
 	{
-		if( obstaculo == false && robot == false)
+		if( obstaculo == false && robot == false && rehen == false)
 		{
-		setIcon(new ImageIcon(bomba.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
+		setIcon(new ImageIcon(mina.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 		obstaculo = true;
 		}
 		else if( obstaculo == false && robot == true )
 			{
-				setIcon(new ImageIcon(img.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
-				obstaculo = false;
+				setIcon(new ImageIcon(arena.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 				robot = false;
 			}
+		else if( obstaculo == false && rehen == true )
+		{
+			setIcon(new ImageIcon(arena.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
+			rehen = false;
+		}
 		else if( obstaculo == true )
 		{
-			setIcon(new ImageIcon(img.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
+			setIcon(new ImageIcon(arena.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 			obstaculo = false;
 		}
 	}
@@ -72,27 +65,41 @@ public class Casilla extends JButton implements ActionListener{
 	{
 		if(( robot == false ) && ( ponerRobot == true ))
 		{
-		setIcon(new ImageIcon(stone.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
+		setIcon(new ImageIcon(robot1.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 		robot = true;
 		ponerRobot = false;
 		}
 		else if(( robot == true )&& ( ponerRobot == false ))
 			{
-				setIcon(new ImageIcon(img.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
+				setIcon(new ImageIcon(arena.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 				robot = false;
-				ponerRobot = true;
+			}
+	}
+	
+	public void actRehen()
+	{
+		if(( rehen == false ) && ( ponerRehen == true ))
+		{
+		setIcon(new ImageIcon(rehen1.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
+		rehen = true;
+		ponerRehen = false;
+		}
+		else if(( rehen == true )&& ( ponerRehen == false ))
+			{
+				setIcon(new ImageIcon(arena.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
+				rehen = false;
 			}
 	}
 	
 	
-	
 	// "Escucha"
 	public void actionPerformed(ActionEvent evento) {
-		JButton button = (JButton) evento.getSource();
-		if ( ponerRobot == false )
+		if ( ponerRobot == false && ponerRehen == false)
 			actObstaculo();
-		else if ( ponerRobot == true )
+		else if ( ponerRobot == true && ponerRehen == false)
 			actRobot();
+		else if ( ponerRehen == true && ponerRobot == false)
+			actRehen();
 		
 	}
 }

@@ -19,17 +19,18 @@ public class Ventana extends JFrame implements ActionListener{
 		
 		barraInicial.botonCrear.addActionListener(this);
 		barraRobot.crearRobot.addActionListener(this);
+		barraRobot.crearRehen.addActionListener(this);
 		
-		this.setLayout(new BorderLayout());
-		this.add(barraInicial, BorderLayout.PAGE_START);
+		setLayout(new BorderLayout());
+		add(barraInicial, BorderLayout.PAGE_START);
 		
-		this.pack();				//Ajusta el tama�o de la ventana a los elementos
+		pack();				//Ajusta el tama�o de la ventana a los elementos
 		
-		this.setResizable(true);	//Se cambiara a false para no permitir que modifiquen el tama�o de la ventana
+		setResizable(true);	//Se cambiara a false para no permitir que modifiquen el tama�o de la ventana
 		
-		//this.setBounds(100, 100, 400, 68);
-		this.setExtendedState(this.MAXIMIZED_BOTH);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 400, 68);
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	
@@ -37,15 +38,19 @@ public class Ventana extends JFrame implements ActionListener{
 		//Si se hace click en el boton crear matriz
 		if( evt.getSource() == barraInicial.botonCrear){
 		matriz = new Matrix(Integer.parseInt(barraInicial.text_fila.getText()),Integer.parseInt(barraInicial.text_col.getText()));
-		this.setLayout(new BorderLayout());
-		this.add(matriz, BorderLayout.CENTER);
-		this.pack();
+		setLayout(new BorderLayout());
+		add(matriz, BorderLayout.CENTER);
+		pack();
 		barraInicial.setVisible(false);
-		this.add(barraRobot, BorderLayout.NORTH);
+		add(barraRobot, BorderLayout.NORTH);
 		}
 		if( evt.getSource() == barraRobot.crearRobot )
 		{
 			matriz.ponerRobot = true;
+		}
+		if( evt.getSource() == barraRobot.crearRehen )
+		{
+			matriz.ponerRehen = true;
 		}
 	}
 	
