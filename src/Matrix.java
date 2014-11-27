@@ -18,6 +18,8 @@ public class Matrix extends JPanel implements ActionListener{
 	int alto;
 	int filas, columnas;
 	
+	int recorrido = 0;
+	
 	public boolean ponerRobot = false;
 	public boolean ponerRehen = false;
 	
@@ -69,11 +71,12 @@ public class Matrix extends JPanel implements ActionListener{
 					if(botones[i][j].rehen == true){
 						rehenCoor[0] = i;
 						rehenCoor[1] = j;
+						botones[i][j].estHeuristica = 0;
 		}}}
 		
 		for(int i = 0; i < filas; i ++){	
 			for(int j = 0; j < columnas; j ++){
-					if(!botones[i][j].obstaculo == true){
+					if(!botones[i][j].obstaculo == true && !botones[i][j].rehen == true){
 						botones[i][j].estHeuristica = Math.abs(i-rehenCoor[0]) + Math.abs(j-rehenCoor[1]); 
 		}}}
 	}
@@ -87,18 +90,23 @@ public class Matrix extends JPanel implements ActionListener{
 				if(botones[i][j].robot){
 					for(int a=0; a<5 ; a++){
 						if (a==0) {x=0; y=0;}
-						else if(a==1){v=1; w=0;}
-						else if(a==2){v=0; w=1;}
-						else if(a==3){v=-1; w=0;}
-						else if(a==4){v=0; w=-1;}
-						if(botones[i+x][j+y].estHeuristica > botones[i+v][j+w].estHeuristica ){
+						else if(a==1 && i!=filas-1){v=1; w=0;}
+						else if(a==2 && j!=columnas-1){v=0; w=1;}
+						else if(a==3 && i!=0){v=-1; w=0;}
+						else if(a==4 && j!=0){v=0; w=-1;}
+						if(botones[i+x][j+y].estHeuristica > botones[i+v][j+w].estHeuristica && botones[i+v][j+w].estHeuristica >= 0){
 							x=v;	y=w;
+							if(botones[i+v][j+w].estHeuristica == 0){
+								return false;
+							}
 						}
 					}
 					botones[i][j].actRobot();
+					botones[i][j].actVisitado();
 					botones[i+x][j+y].ponerRobot = true;
 					botones[i+x][j+y].actRobot();
-					return true;
+					botones[i][j].estHeuristica = recorrido + botones[i][j].estHeuristica;
+					recorrido++;
 				}
 	
 		}}

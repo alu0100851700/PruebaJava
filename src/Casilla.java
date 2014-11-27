@@ -14,6 +14,7 @@ public class Casilla extends JButton implements ActionListener{
 	ImageIcon arena = new ImageIcon("arena.jpg");
 	ImageIcon rehen1 = new ImageIcon("rehen1.jpg");
 	ImageIcon robot1 = new ImageIcon("robot1.jpg");
+	ImageIcon huella = new ImageIcon("huella.jpg");
 	private int ancho, alto;
 	
 	//Estima Heuristica
@@ -48,6 +49,7 @@ public class Casilla extends JButton implements ActionListener{
 		robot = false;
 		rehen = false;
 		visitado = false;
+		estHeuristica = -1;
 		setIcon(new ImageIcon(arena.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 	}
 
@@ -104,6 +106,12 @@ public class Casilla extends JButton implements ActionListener{
 				setIcon(new ImageIcon(arena.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 				rehen = false;
 			}
+	}
+	
+	public void actVisitado()
+	{
+		setIcon(new ImageIcon(huella.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
+		visitado = true;
 	}
 	
 	
