@@ -2,8 +2,11 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JFrame;
 
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Ventana extends JFrame implements ActionListener{
 	
@@ -11,6 +14,8 @@ public class Ventana extends JFrame implements ActionListener{
 	private ToolBarRobot barraRobot;
 	private Matrix matriz;
 
+	Timer timer;
+    
 
 	// Constructor
 	public Ventana()  {
@@ -20,6 +25,10 @@ public class Ventana extends JFrame implements ActionListener{
 		barraInicial.botonCrear.addActionListener(this);
 		barraRobot.crearRobot.addActionListener(this);
 		barraRobot.crearRehen.addActionListener(this);
+		barraRobot.reset.addActionListener(this);
+		barraRobot.iniciar.addActionListener(this);
+		
+		timer = new Timer();
 		
 		setLayout(new BorderLayout());
 		add(barraInicial, BorderLayout.PAGE_START);
@@ -52,8 +61,32 @@ public class Ventana extends JFrame implements ActionListener{
 		{
 			matriz.ponerRehen = true;
 		}
+		if( evt.getSource() == barraRobot.reset )
+		{
+			matriz.reset();
+		}
+		if( evt.getSource() == barraRobot.iniciar )
+		{
+				matriz.initAlgoritmo();
+				timer.schedule(task,0,250);
+		}
 	}
 	
+	TimerTask task = new TimerTask() {
+        int tic=0;
+
+        @Override
+        public void run()
+        {
+        	boolean s = matriz.iniciarAlgoritmo();
+        	if (!s) {
+        		timer.cancel();
+        		task.cancel();
+        		timer.purge();
+        		return;
+        	}
+        }
+        };
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

@@ -16,8 +16,11 @@ public class Casilla extends JButton implements ActionListener{
 	ImageIcon robot1 = new ImageIcon("robot1.jpg");
 	private int ancho, alto;
 	
+	//Estima Heuristica
+	public int estHeuristica = -1;
+	
 	// Variables de control
-	private boolean obstaculo = false;
+	public boolean obstaculo = false;
 	public boolean robot = false;
 	public boolean rehen = false;
 	private boolean visitado = false;
@@ -27,16 +30,27 @@ public class Casilla extends JButton implements ActionListener{
 	// Constructor
 	public Casilla(int anch, int alt) {
 		addActionListener(this);
+		
 		ancho = anch;	alto = alt;
+		
 		Dimension newDimension =  new Dimension(ancho,alto);
+
 	    setPreferredSize(newDimension);
+
+	   
 		setIcon(new ImageIcon(arena.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 		
 	}
-
-
 	
-	
+	public void reset()
+	{
+		obstaculo = false;
+		robot = false;
+		rehen = false;
+		visitado = false;
+		setIcon(new ImageIcon(arena.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
+	}
+
 	public void actObstaculo()
 	{
 		if( obstaculo == false && robot == false && rehen == false)
@@ -75,6 +89,7 @@ public class Casilla extends JButton implements ActionListener{
 				robot = false;
 			}
 	}
+
 	
 	public void actRehen()
 	{
