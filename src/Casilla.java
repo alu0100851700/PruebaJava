@@ -28,6 +28,7 @@ public class Casilla extends JButton implements ActionListener{
 
 	public boolean ponerRobot = false;
 	public boolean ponerRehen = false;
+	
 	// Constructor
 	public Casilla(int anch, int alt) {
 		addActionListener(this);

@@ -1,5 +1,6 @@
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -24,6 +25,11 @@ public class Matrix extends JPanel implements ActionListener{
 	public boolean ponerRehen = false;
 	
 	int[] rehenCoor;	//Coordenada en la que se encuentra el rehen
+	
+	// Para la posición del robot
+	int [] robotPos = new int[2];
+	///////////////
+	
 	
 	Matrix(int num_fil, int num_col)
 	{
@@ -118,6 +124,12 @@ public class Matrix extends JPanel implements ActionListener{
 			for(int j = 0; j < columnas; j ++){
 					if(botones[i][j].robot == true){
 						ponerRobot = false;
+						
+						// Pos robot
+						robotPos[0] = i;
+						robotPos[1]= j;
+						///////////
+						
 						return true;
 					}
 				}}
@@ -134,6 +146,52 @@ public class Matrix extends JPanel implements ActionListener{
 				}}
 		return false;
 	}
+	
+
+	
+	/********* Esqueleto Algoritmo A* *************/
+/*	
+	public void A_Estrella()
+	{
+		// Contendrá la posición del menor de la lista
+		int minimo_abierta = 0;
+		ArrayList lista_abierta = new ArrayList();
+		ArrayList lista_cerrada = new ArrayList();
+		
+		// Etapa de inicializacion
+		/*lista_abierta.add(robotPos);
+		 *
+		lista_cerrada = null;
+		
+		// Para escoger el menor de la lista
+		for ( int abierta = 0; abierta < lista_abierta.size(); abierta++)
+		{
+			
+		}
+		
+		for(int i = 0; i < filas; i ++){	
+			for(int j = 0; j < columnas; j ++)
+			{
+				if(botones[i][j].robot)
+				{
+					coordX = i;
+					coordY = j;
+				}
+			}
+		/////////////////////////////////////////
+		
+			for( int x = 0; x < filas; x ++){	
+				for(int y = 0; y < columnas; y ++)
+				{
+					if(botones[coordX+1][coordY].estHeuristica >))
+					{
+						coordX = i;
+						coordY = j;
+					}
+				}
+		}
+*/
+		
 
 	
 	public void actionPerformed(ActionEvent evento) {
