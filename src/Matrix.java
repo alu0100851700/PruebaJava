@@ -267,7 +267,11 @@ public class Matrix extends JPanel implements ActionListener{
 				iterSolucion++;
 			}
 		}
-		return true;
+		// En caso de encontrar una solución 
+		// el metodo devolverá verdadero
+		if(solucion)
+			return true;
+		return false;
 	}*/
 	/****** Repasar el bucle necesario despues de introducir un item en lista_cerrada, si no es la solución debería
 	 * 		seguir a partir de ese, eso FALTA********************************************************************/
