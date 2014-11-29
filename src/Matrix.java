@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.TimerTask;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,6 +31,9 @@ public class Matrix extends JPanel implements ActionListener{
 	int [] robotPos = new int[2];
 	///////////////
 	
+	static int MINIMO = 999999999;
+	
+	
 	
 	Matrix(int num_fil, int num_col)
 	{
@@ -53,6 +57,8 @@ public class Matrix extends JPanel implements ActionListener{
 			for(int j = 0; j < columnas; j ++){
 				botones[i][j] = new Casilla(ancho/num_fil,alto/num_col);
 				botones[i][j].addActionListener(this);
+				botones[i][j].x = i;	// Posición X de cada casilla
+				botones[i][j].y = j;	// Posición Y de cada casilla
 				this.add(botones[i][j]);}}
 		
 		paintComponents(getGraphics());
@@ -118,7 +124,7 @@ public class Matrix extends JPanel implements ActionListener{
 		}}
 	return true;
 	}
-	
+
 	private boolean robot(){
 		for(int i = 0; i < filas; i ++){	
 			for(int j = 0; j < columnas; j ++){
@@ -127,7 +133,7 @@ public class Matrix extends JPanel implements ActionListener{
 						
 						// Pos robot
 						robotPos[0] = i;
-						robotPos[1]= j;
+						robotPos[1] = j;
 						///////////
 						
 						return true;
@@ -147,52 +153,124 @@ public class Matrix extends JPanel implements ActionListener{
 		return false;
 	}
 	
-
-	
-	/********* Esqueleto Algoritmo A* *************/
-/*	
-	public void A_Estrella()
+	/*	ALGORITMO A* --->> Hasta ahora no funciona pero creo que 
+	 * 					   no va mal encaminado
+	 *
+	 * 
+	 * int hDeX()		// h*(x)
+	 
 	{
-		// Contendrá la posición del menor de la lista
-		int minimo_abierta = 0;
-		ArrayList lista_abierta = new ArrayList();
-		ArrayList lista_cerrada = new ArrayList();
+		int HX = recorrido + Math.abs(robotPos[0]-rehenCoor[0]) + Math.abs(robotPos[1]-rehenCoor[1]);
+		return HX;
+	}
+
+	public boolean Aestrella()
+	{
+		int [][] lista_abierta;
+		int [][] lista_cerrada;
+		int posMinimo = 0;	// Para escoger el item de la lista abierta
+		int numCandidatos = 0;	// Candidatos para la lista abierta
+		int iterSolucion = 0; // Index para el camino que alberga la solución en la lista cerrada
+		boolean solucion = false;	// Cerrara el bucle en caso de encontrar la solucion
 		
-		// Etapa de inicializacion
-		/*lista_abierta.add(robotPos);
+		* La primera de las filas será para la 
+		 * coordenada X, la segunda para la 
+		 * coordenada Y y la tercera para el valor
+		 * acumulado en el recorrido. El segundo 
+		 * valor, representará la casilla, el bloque
+		 * formado por lo anterior.
 		 *
-		lista_cerrada = null;
+		lista_abierta = new int[3][filas*columnas];
+		lista_cerrada = new int[3][filas*columnas];
 		
-		// Para escoger el menor de la lista
-		for ( int abierta = 0; abierta < lista_abierta.size(); abierta++)
+		// Inicialización:
+		lista_abierta[0][numCandidatos] = robotPos[0];	// ahora como primer elemento
+		lista_abierta[1][numCandidatos] = robotPos[1];	// situamos las cordenadas del robot(S)
+		lista_abierta[2][numCandidatos] = 0;	// Coste inicial es 0.
+		numCandidatos++;
+		
+		
+		// La lista cerrada en una primera etapa se encuentra vacía.
+		// Fases
+		while(!solucion)
 		{
+			// En la lista abierta meteremos todos aquellos candidatos
+			// con su respectivo coste asociado
 			
-		}
-		
-		for(int i = 0; i < filas; i ++){	
-			for(int j = 0; j < columnas; j ++)
+			//Casilla a la izquierda de la actual
+			if ((( robotPos[1] - 1) >= 0) && ((robotPos[1] - 1) <= columnas))
 			{
-				if(botones[i][j].robot)
-				{
-					coordX = i;
-					coordY = j;
-				}
+					lista_abierta[0][numCandidatos] = robotPos[0];
+					lista_abierta[1][numCandidatos] = robotPos[1] - 1;
+					// Faltaría actualizar el tercer campo: Coste
+					numCandidatos++;
 			}
-		/////////////////////////////////////////
-		
-			for( int x = 0; x < filas; x ++){	
-				for(int y = 0; y < columnas; y ++)
+			//Casilla a la derecha dela actual
+			if (((robotPos[1] + 1) >= 0) && ((robotPos[1] + 1) <= columnas))
+			{
+				lista_abierta[0][numCandidatos] = robotPos[0];	
+				lista_abierta[1][numCandidatos] = robotPos[1] + 1;
+				// Faltaría actualizar el tercer campo: Coste
+				numCandidatos++;
+			}
+			//Casilla superior a la actual
+			if (((robotPos[0] - 1) >= 0) && ((robotPos[0] - 1) <= filas))
+			{
+					lista_abierta[0][numCandidatos] = robotPos[0] - 1;
+					lista_abierta[1][numCandidatos] = robotPos[1];
+					// Faltaría actualizar el tercer campo: Coste
+					numCandidatos++;
+			}
+			//Casilla inferior a la actual
+			if (((robotPos[0] + 1) >= 0) && ((robotPos[0] + 1) <= filas))
+			{
+					lista_abierta[0][numCandidatos] = robotPos[0] + 1;
+					lista_abierta[1][numCandidatos] = robotPos[1];
+					// Faltaría actualizar el tercer campo: Coste
+					numCandidatos++;
+			}
+			
+			// Retiramos y activamos la casilla como ya visitada
+			botones[robotPos[0]][robotPos[1]].actRobot();
+			botones[robotPos[0]][robotPos[1]].actVisitado();
+			
+			// Mientras haya elementos en la lista_abierta buscamos el menor
+			while(lista_abierta.length-1 > 0)
+			{
+				for( int iter = 0; iter < lista_abierta.length; iter ++)
 				{
-					if(botones[coordX+1][coordY].estHeuristica >))
+					if(lista_abierta[3][iter] < MINIMO )
 					{
-						coordX = i;
-						coordY = j;
+						MINIMO = lista_abierta[3][iter];
+						posMinimo = iter;
 					}
 				}
+				lista_cerrada[0][iterSolucion] = lista_abierta[0][posMinimo];	// Guardamos el menor de los
+				lista_cerrada[1][iterSolucion] = lista_abierta[1][posMinimo];	// valores que escogeremos 
+				lista_cerrada[2][iterSolucion] = lista_abierta[2][posMinimo];	// como item en la lista_cerrada
+				
+				*Comprobamos que la posicion recien introducida en 
+				 * la lista de cerrados no coincida con la solucion,
+				 * en caso de hacerlo salimos del bucle( condicion
+				 * de parada)
+				 *
+				// Realizamos el "movimiento" visualmente
+				botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].ponerRobot = true;
+				botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].actRobot();
+				botones[robotPos[0]][robotPos[1]].estHeuristica = hDeX();
+				recorrido++;
+				if((lista_cerrada[0][iterSolucion] == rehenCoor[0]) 
+					&& (lista_cerrada[1][iterSolucion] == rehenCoor[1]))
+					{
+						solucion = true;
+					}
+				iterSolucion++;
+			}
 		}
-*/
-		
-
+		return true;
+	}*/
+	/****** Repasar el bucle necesario despues de introducir un item en lista_cerrada, si no es la solución debería
+	 * 		seguir a partir de ese, eso FALTA********************************************************************/
 	
 	public void actionPerformed(ActionEvent evento) {
 		Casilla button = (Casilla) evento.getSource();

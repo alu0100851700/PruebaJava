@@ -29,6 +29,11 @@ public class Casilla extends JButton implements ActionListener{
 	public boolean ponerRobot = false;
 	public boolean ponerRehen = false;
 	
+	// Posición de la casilla en la matriz
+	public int x = 0;
+	public int y = 0;
+	
+	
 	// Constructor
 	public Casilla(int anch, int alt) {
 		addActionListener(this);
@@ -60,6 +65,7 @@ public class Casilla extends JButton implements ActionListener{
 		{
 		setIcon(new ImageIcon(mina.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 		obstaculo = true;
+		estHeuristica = 999999999;
 		}
 		else if( obstaculo == false && robot == true )
 			{
@@ -75,6 +81,7 @@ public class Casilla extends JButton implements ActionListener{
 		{
 			setIcon(new ImageIcon(arena.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 			obstaculo = false;
+			estHeuristica = -1;
 		}
 	}
 	
