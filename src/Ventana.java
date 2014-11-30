@@ -68,20 +68,19 @@ public class Ventana extends JFrame implements ActionListener{
 		if( evt.getSource() == barraRobot.iniciar )
 		{
 				matriz.initAlgoritmo();
-				//timer.schedule(task,0,500);
-				matriz.Aestrella();
+				timer.schedule(task,0,500);
+				//matriz.Aestrella();
 		}
 	}
 	
 	TimerTask task = new TimerTask() {
-        @Override
         public void run()
         {
         	//boolean s = matriz.iniciarAlgoritmo();
+        	//matriz.initAlgoritmo();
         	boolean s = matriz.Aestrella();
         	if (!s) {
         		timer.cancel();
-        		task.cancel();
         		timer.purge();
         	}
         }

@@ -98,12 +98,6 @@ public class Matrix extends JPanel implements ActionListener{
 			lista_abierta[2][i] = INFINITO;
 		}
 		
-		// Inicialización:
-		lista_abierta[0][numCandidatos] = robotPos[0];	// ahora como primer elemento
-		lista_abierta[1][numCandidatos] = robotPos[1];	// situamos las cordenadas del robot(S)
-		lista_abierta[2][numCandidatos] = hDeX(robotPos[0],robotPos[1]);	// Coste inicial de la casilla del robot.
-		numCandidatos++;
-		
 		for(int i = 0; i < filas; i ++){	
 			for(int j = 0; j < columnas; j ++){
 					if(botones[i][j].rehen == true){
@@ -115,7 +109,8 @@ public class Matrix extends JPanel implements ActionListener{
 		for(int i = 0; i < filas; i ++){	
 			for(int j = 0; j < columnas; j ++){
 					if(!botones[i][j].obstaculo && !botones[i][j].rehen){
-						botones[i][j].estHeuristica = Math.abs(i-rehenCoor[0]) + Math.abs(j-rehenCoor[1]); 
+						//botones[i][j].estHeuristica = Math.abs(i-rehenCoor[0]) + Math.abs(j-rehenCoor[1]); 
+						botones[i][j].estHeuristica = Math.abs(i-rehenCoor[0]) + Math.abs(j-rehenCoor[1]) + Math.abs(Math.abs(i-rehenCoor[0]) - Math.abs(j-rehenCoor[1]));
 		}}}
 
 		for(int i = 0; i < filas; i ++){	
@@ -125,6 +120,12 @@ public class Matrix extends JPanel implements ActionListener{
 						robotPos[1] = j;
 					}
 				}}
+		
+		// Inicialización:
+				lista_abierta[0][numCandidatos] = robotPos[0];	// ahora como primer elemento
+				lista_abierta[1][numCandidatos] = robotPos[1];	// situamos las cordenadas del robot(S)
+				lista_abierta[2][numCandidatos] = hDeX(robotPos[0],robotPos[1]);	// Coste inicial de la casilla del robot.
+				numCandidatos = 1;
 	}
 	
 	
@@ -197,35 +198,37 @@ public class Matrix extends JPanel implements ActionListener{
 	
 	public boolean Aestrella()
 	{
-		System.out.println("Estamos en A");
+		System.out.println("\nEstamos en A");
 		// La lista cerrada en una primera etapa se encuentra vacía.
 		// Fases
 			// En la lista abierta meteremos todos aquellos candidatos
 			// con su respectivo coste asociado
-			
+		boolean encontrado = false;
 			//Casilla a la izquierda de la actual
 			if ((( robotPos[1] - 1) >= 0) && ((robotPos[1] - 1) <= columnas)
 					&& !botones[robotPos[0]][robotPos[1] - 1].obstaculo)
 			{
+				
 					lista_abierta[0][numCandidatos] = robotPos[0];
 					lista_abierta[1][numCandidatos] = robotPos[1] - 1;
 					lista_abierta[2][numCandidatos] = hDeX(robotPos[0],robotPos[1] - 1);
 					numCandidatos++;
 					
-					System.out.println("--1 if");
-					System.out.println(robotPos[0]+","+robotPos[1]);
+					System.out.println("Izquierda");
+					System.out.println(botones[robotPos[0]][robotPos[1]-1].estHeuristica);
 			}
 			//Casilla a la derecha dela actual
 			if (((robotPos[1] + 1) >= 0) && ((robotPos[1] + 1) <= columnas)
 					&& !botones[robotPos[0]][robotPos[1] + 1].obstaculo)
 			{
-				lista_abierta[0][numCandidatos] = robotPos[0];	
-				lista_abierta[1][numCandidatos] = robotPos[1] + 1;
-				lista_abierta[2][numCandidatos] = hDeX(robotPos[0],robotPos[1] + 1);
-				numCandidatos++;
+					lista_abierta[0][numCandidatos] = robotPos[0];	
+					lista_abierta[1][numCandidatos] = robotPos[1] + 1;
+					lista_abierta[2][numCandidatos] = hDeX(robotPos[0],robotPos[1] + 1);
+					numCandidatos++;
 				
-				System.out.println("--2 if");
-				System.out.println(robotPos[0]+","+robotPos[1]);
+				
+				System.out.println("Derecha");
+				System.out.println(botones[robotPos[0]][robotPos[1]+1].estHeuristica);
 			}
 			//Casilla superior a la actual
 			if (((robotPos[0] - 1) >= 0) && ((robotPos[0] - 1) <= filas)
@@ -235,9 +238,9 @@ public class Matrix extends JPanel implements ActionListener{
 					lista_abierta[1][numCandidatos] = robotPos[1];
 					lista_abierta[2][numCandidatos] = hDeX(robotPos[0] - 1,robotPos[1]);
 					numCandidatos++;
-					
-					System.out.println("--3 if");
-					System.out.println(robotPos[0]+","+robotPos[1]);
+				
+				System.out.println("Superior");
+				System.out.println(botones[robotPos[0] - 1][robotPos[1]].estHeuristica);
 			}
 			//Casilla inferior a la actual
 			if (((robotPos[0] + 1) >= 0) && ((robotPos[0] + 1) <= filas)
@@ -247,9 +250,11 @@ public class Matrix extends JPanel implements ActionListener{
 					lista_abierta[1][numCandidatos] = robotPos[1];
 					lista_abierta[2][numCandidatos] = hDeX(robotPos[0] + 1,robotPos[1]);
 					numCandidatos++;
-					
-					System.out.println("--4 if");
-					System.out.println(robotPos[0]+","+robotPos[1]);
+				
+				
+				
+				System.out.println("Inferior");
+				System.out.println(botones[robotPos[0] + 1][robotPos[1]].estHeuristica);
 			}
 			
 			
@@ -257,7 +262,8 @@ public class Matrix extends JPanel implements ActionListener{
 			// Mientras no hayamos comprobado todos los elementos en la lista_abierta buscamos el menor
 			for( int iter = 0; iter < numCandidatos; iter ++)
 			{
-				if(lista_abierta[2][iter] <= min && lista_abierta[2][iter] > INFINITO)	
+				if(lista_abierta[2][iter] <= min && lista_abierta[2][iter] > INFINITO &&
+						!botones[lista_abierta[0][iter]][lista_abierta[1][iter]].robot)	
 				{
 					min = lista_abierta[2][iter];
 					posMinimo = iter;	// Sacamos el elemento de menor peso
@@ -267,6 +273,10 @@ public class Matrix extends JPanel implements ActionListener{
 			lista_cerrada[1][iterSolucion] = lista_abierta[1][posMinimo];	// valores que escogeremos 
 			lista_cerrada[2][iterSolucion] = lista_abierta[2][posMinimo];	// como item en la lista_cerrada
 			
+			lista_abierta[2][posMinimo] = 999999999;
+			
+			System.out.println("Robot");
+			System.out.println(botones[robotPos[0]][robotPos[1]].estHeuristica);
 			
 			//Comprobamos que la posicion recien introducida en 
 			// la lista de cerrados no coincida con la solucion,
@@ -276,7 +286,7 @@ public class Matrix extends JPanel implements ActionListener{
 			if((lista_cerrada[0][iterSolucion] == rehenCoor[0]) 
 				&& (lista_cerrada[1][iterSolucion] == rehenCoor[1]))
 				{
-					solucion = true;
+					return false;
 				}
 			else{
 				
@@ -292,13 +302,15 @@ public class Matrix extends JPanel implements ActionListener{
 			// Realizamos el "movimiento" visualmente
 			botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].ponerRobot = true;
 			botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].actRobot();
+			robotPos[0] = lista_cerrada[0][iterSolucion];
+			robotPos[1] = lista_cerrada[1][iterSolucion];
 			iterSolucion++;
 			}
 				
 
 		// En caso de encontrar una solución 
 		// el metodo devolverá verdadero
-		return solucion;
+		return true;
 	}
 	/****** Repasar el bucle necesario despues de introducir un item en lista_cerrada, si no es la solución debería
 	 * 		seguir a partir de ese, eso FALTA********************************************************************/
