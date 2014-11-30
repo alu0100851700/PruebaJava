@@ -50,9 +50,12 @@ public class Matrix extends JPanel implements ActionListener{
 		columnas = num_col;
 		ancho = this.getWidth();
 		alto =  this.getHeight();
-		
+		/*
 		lista_abierta = new int[3][filas*columnas];
 		lista_cerrada = new int[3][filas*columnas];
+		*/
+		lista_abierta = new int[3][999999];
+		lista_cerrada = new int[3][999999];
 		
 		//Parámetros GridLayout(num filas, num columnas, hgap(espacio horizontal), vgap(espacio vertical))
 		//En este caso utilizamos el otro constructor para evitar espacios entre elementos.
@@ -203,7 +206,7 @@ public class Matrix extends JPanel implements ActionListener{
 		// Fases
 			// En la lista abierta meteremos todos aquellos candidatos
 			// con su respectivo coste asociado
-		boolean encontrado = false;
+		
 			//Casilla a la izquierda de la actual
 			if ((( robotPos[1] - 1) >= 0) && ((robotPos[1] - 1) <= columnas)
 					&& !botones[robotPos[0]][robotPos[1] - 1].obstaculo)
@@ -269,6 +272,8 @@ public class Matrix extends JPanel implements ActionListener{
 					posMinimo = iter;	// Sacamos el elemento de menor peso
 				}
 			}
+			numCandidatos = 0;
+			
 			lista_cerrada[0][iterSolucion] = lista_abierta[0][posMinimo];	// Guardamos el menor de los
 			lista_cerrada[1][iterSolucion] = lista_abierta[1][posMinimo];	// valores que escogeremos 
 			lista_cerrada[2][iterSolucion] = lista_abierta[2][posMinimo];	// como item en la lista_cerrada
@@ -315,6 +320,15 @@ public class Matrix extends JPanel implements ActionListener{
 	/****** Repasar el bucle necesario despues de introducir un item en lista_cerrada, si no es la solución debería
 	 * 		seguir a partir de ese, eso FALTA********************************************************************/
 	
+	void reset_listaAbierta()
+	{
+		for(int i=0; i < lista_abierta.length; i++){
+			lista_abierta[0][i] = -1;
+			lista_abierta[1][i] = -1;
+			lista_abierta[2][i] = -1;
+		}
+	}
+	
 	public void actionPerformed(ActionEvent evento) {
 		Casilla button = (Casilla) evento.getSource();
 		if(ponerRobot==true && !robot()){
@@ -326,4 +340,6 @@ public class Matrix extends JPanel implements ActionListener{
 			ponerRehen = false;
 			}
 	}
+	
+	int max = 999999999;
 }	
