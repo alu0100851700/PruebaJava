@@ -152,12 +152,13 @@ public class Matrix extends JPanel implements ActionListener{
 				}}
 		return false;
 	}
-	
+	/***********************************************************************************************
 	/*	ALGORITMO A* --->> Hasta ahora no funciona pero creo que 
-	 * 					   no va mal encaminado
+	 					   no va mal encaminado
 	 *
-	 * 
-	 * int hDeX()		// h*(x)
+	
+	// Funcion que devolverá la estima heurística
+	int hDeX()		// h*(x)
 	 
 	{
 		int HX = recorrido + Math.abs(robotPos[0]-rehenCoor[0]) + Math.abs(robotPos[1]-rehenCoor[1]);
@@ -173,13 +174,13 @@ public class Matrix extends JPanel implements ActionListener{
 		int iterSolucion = 0; // Index para el camino que alberga la solución en la lista cerrada
 		boolean solucion = false;	// Cerrara el bucle en caso de encontrar la solucion
 		
-		* La primera de las filas será para la 
-		 * coordenada X, la segunda para la 
-		 * coordenada Y y la tercera para el valor
-		 * acumulado en el recorrido. El segundo 
-		 * valor, representará la casilla, el bloque
-		 * formado por lo anterior.
-		 *
+		// La primera de las filas será para la 
+		//coordenada X, la segunda para la 
+		// coordenada Y y la tercera para el valor
+		// acumulado en el recorrido. El segundo 
+		// valor, representará la casilla, el bloque
+		// formado por lo anterior.
+		 
 		lista_abierta = new int[3][filas*columnas];
 		lista_cerrada = new int[3][filas*columnas];
 		
@@ -202,7 +203,7 @@ public class Matrix extends JPanel implements ActionListener{
 			{
 					lista_abierta[0][numCandidatos] = robotPos[0];
 					lista_abierta[1][numCandidatos] = robotPos[1] - 1;
-					// Faltaría actualizar el tercer campo: Coste
+					botones[robotPos[0]][robotPos[1] - 1].estHeuristica = hDeX();
 					numCandidatos++;
 			}
 			//Casilla a la derecha dela actual
@@ -210,7 +211,7 @@ public class Matrix extends JPanel implements ActionListener{
 			{
 				lista_abierta[0][numCandidatos] = robotPos[0];	
 				lista_abierta[1][numCandidatos] = robotPos[1] + 1;
-				// Faltaría actualizar el tercer campo: Coste
+				botones[robotPos[0]][robotPos[1] + 1].estHeuristica = hDeX();
 				numCandidatos++;
 			}
 			//Casilla superior a la actual
@@ -218,7 +219,7 @@ public class Matrix extends JPanel implements ActionListener{
 			{
 					lista_abierta[0][numCandidatos] = robotPos[0] - 1;
 					lista_abierta[1][numCandidatos] = robotPos[1];
-					// Faltaría actualizar el tercer campo: Coste
+					botones[robotPos[0] - 1][robotPos[1]].estHeuristica = hDeX();
 					numCandidatos++;
 			}
 			//Casilla inferior a la actual
@@ -226,7 +227,8 @@ public class Matrix extends JPanel implements ActionListener{
 			{
 					lista_abierta[0][numCandidatos] = robotPos[0] + 1;
 					lista_abierta[1][numCandidatos] = robotPos[1];
-					// Faltaría actualizar el tercer campo: Coste
+					// Ultimas modificaciones--> Revisar
+					botones[robotPos[0] + 1][robotPos[1]].estHeuristica = hDeX();
 					numCandidatos++;
 			}
 			
@@ -242,18 +244,19 @@ public class Matrix extends JPanel implements ActionListener{
 					if(lista_abierta[3][iter] < MINIMO )
 					{
 						MINIMO = lista_abierta[3][iter];
-						posMinimo = iter;
+						posMinimo = iter;	// Sacamos el elemento de menor peso
 					}
 				}
 				lista_cerrada[0][iterSolucion] = lista_abierta[0][posMinimo];	// Guardamos el menor de los
 				lista_cerrada[1][iterSolucion] = lista_abierta[1][posMinimo];	// valores que escogeremos 
 				lista_cerrada[2][iterSolucion] = lista_abierta[2][posMinimo];	// como item en la lista_cerrada
+				recorrido++;
 				
-				*Comprobamos que la posicion recien introducida en 
-				 * la lista de cerrados no coincida con la solucion,
-				 * en caso de hacerlo salimos del bucle( condicion
-				 * de parada)
-				 *
+				//Comprobamos que la posicion recien introducida en 
+				// la lista de cerrados no coincida con la solucion,
+				// en caso de hacerlo salimos del bucle( condicion
+				// de parada)
+				
 				// Realizamos el "movimiento" visualmente
 				botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].ponerRobot = true;
 				botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].actRobot();
@@ -272,7 +275,7 @@ public class Matrix extends JPanel implements ActionListener{
 		if(solucion)
 			return true;
 		return false;
-	}*/
+	}
 	/****** Repasar el bucle necesario despues de introducir un item en lista_cerrada, si no es la solución debería
 	 * 		seguir a partir de ese, eso FALTA********************************************************************/
 	
