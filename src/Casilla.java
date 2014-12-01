@@ -3,6 +3,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.plaf.synth.SynthButtonUI;
@@ -16,6 +17,11 @@ public class Casilla extends JButton implements ActionListener{
 	ImageIcon robot1 = new ImageIcon("robot1.jpg");
 	ImageIcon huella = new ImageIcon("huella.jpg");
 	private int ancho, alto;
+	
+	
+	/**/
+	//Icon icono = new ImageIcon(mina.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_DEFAULT));
+	
 	
 	//Estima Heuristica
 	public int estHeuristica = -1;
@@ -46,7 +52,7 @@ public class Casilla extends JButton implements ActionListener{
 
 	   
 		setIcon(new ImageIcon(arena.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
-		
+		//setIcon(icono);
 	}
 	
 	public void reset()

@@ -1,3 +1,6 @@
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.List;
@@ -50,17 +53,23 @@ public class Matrix extends JPanel implements ActionListener{
 		columnas = num_col;
 		ancho = this.getWidth();
 		alto =  this.getHeight();
-		/*
+		
 		lista_abierta = new int[3][filas*columnas];
 		lista_cerrada = new int[3][filas*columnas];
-		*/
-		lista_abierta = new int[3][999999];
-		lista_cerrada = new int[3][999999];
+		
+		//lista_abierta = new int[3][999999];
+		//lista_cerrada = new int[3][999999];
 		
 		//Parámetros GridLayout(num filas, num columnas, hgap(espacio horizontal), vgap(espacio vertical))
 		//En este caso utilizamos el otro constructor para evitar espacios entre elementos.
 		this.setLayout(new GridLayout(num_fil,num_col));
 		
+		/*this.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.RELATIVE;
+		*/
+		
+		//TAMAÑO.setSize(10,10);
 		//Crea la Matriz de Casillas
 		botones = new Casilla[filas][columnas];
 		for(int i = 0; i < filas; i ++){	
@@ -69,7 +78,9 @@ public class Matrix extends JPanel implements ActionListener{
 				botones[i][j].addActionListener(this);
 				botones[i][j].x = i;	// Posición X de cada casilla
 				botones[i][j].y = j;	// Posición Y de cada casilla
-				this.add(botones[i][j]);}}
+				this.add(botones[i][j]);
+				//this.add(botones[i][j], c);
+				}}
 		
 		paintComponents(getGraphics());
 		
@@ -201,7 +212,6 @@ public class Matrix extends JPanel implements ActionListener{
 	
 	public boolean Aestrella()
 	{
-		System.out.println("\nEstamos en A");
 		// La lista cerrada en una primera etapa se encuentra vacía.
 		// Fases
 			// En la lista abierta meteremos todos aquellos candidatos
@@ -216,9 +226,6 @@ public class Matrix extends JPanel implements ActionListener{
 					lista_abierta[1][numCandidatos] = robotPos[1] - 1;
 					lista_abierta[2][numCandidatos] = hDeX(robotPos[0],robotPos[1] - 1);
 					numCandidatos++;
-					
-					System.out.println("Izquierda");
-					System.out.println(botones[robotPos[0]][robotPos[1]-1].estHeuristica);
 			}
 			//Casilla a la derecha dela actual
 			if (((robotPos[1] + 1) >= 0) && ((robotPos[1] + 1) <= columnas)
@@ -228,10 +235,6 @@ public class Matrix extends JPanel implements ActionListener{
 					lista_abierta[1][numCandidatos] = robotPos[1] + 1;
 					lista_abierta[2][numCandidatos] = hDeX(robotPos[0],robotPos[1] + 1);
 					numCandidatos++;
-				
-				
-				System.out.println("Derecha");
-				System.out.println(botones[robotPos[0]][robotPos[1]+1].estHeuristica);
 			}
 			//Casilla superior a la actual
 			if (((robotPos[0] - 1) >= 0) && ((robotPos[0] - 1) <= filas)
@@ -241,9 +244,6 @@ public class Matrix extends JPanel implements ActionListener{
 					lista_abierta[1][numCandidatos] = robotPos[1];
 					lista_abierta[2][numCandidatos] = hDeX(robotPos[0] - 1,robotPos[1]);
 					numCandidatos++;
-				
-				System.out.println("Superior");
-				System.out.println(botones[robotPos[0] - 1][robotPos[1]].estHeuristica);
 			}
 			//Casilla inferior a la actual
 			if (((robotPos[0] + 1) >= 0) && ((robotPos[0] + 1) <= filas)
@@ -253,11 +253,6 @@ public class Matrix extends JPanel implements ActionListener{
 					lista_abierta[1][numCandidatos] = robotPos[1];
 					lista_abierta[2][numCandidatos] = hDeX(robotPos[0] + 1,robotPos[1]);
 					numCandidatos++;
-				
-				
-				
-				System.out.println("Inferior");
-				System.out.println(botones[robotPos[0] + 1][robotPos[1]].estHeuristica);
 			}
 			
 			
@@ -280,8 +275,6 @@ public class Matrix extends JPanel implements ActionListener{
 			
 			lista_abierta[2][posMinimo] = 999999999;
 			
-			System.out.println("Robot");
-			System.out.println(botones[robotPos[0]][robotPos[1]].estHeuristica);
 			
 			//Comprobamos que la posicion recien introducida en 
 			// la lista de cerrados no coincida con la solucion,
@@ -294,9 +287,7 @@ public class Matrix extends JPanel implements ActionListener{
 					return false;
 				}
 			else{
-				
-				System.out.println("Pos Robot fuera");
-				System.out.println(robotPos[0]+","+robotPos[1]);
+			
 				
 				
 			// Retiramos y activamos la casilla como ya visitada
@@ -317,27 +308,30 @@ public class Matrix extends JPanel implements ActionListener{
 		// el metodo devolverá verdadero
 		return true;
 	}
-	/****** Repasar el bucle necesario despues de introducir un item en lista_cerrada, si no es la solución debería
-	 * 		seguir a partir de ese, eso FALTA********************************************************************/
 	
 	/** Funcion void que situara los obstaculos en el caso de escoger colocacion random **/
 	public void funcionRandom(int saturacion)
 	{
-		reset();
+		// Incluías la llamada a reset(), pero creo que no es necesaria
+		// por si al user se le da por poner el robot y rehén primero
+		// cosa que veo bastante lógica.
 		int x,y;
 		int numObstaculos = (int) (saturacion*0.01*filas*columnas);
 		while(numObstaculos > 0)
 		{
 			x = (int)(Math.random()*filas);
-			System.out.println("..............................."+x);
 			y = (int)(Math.random()*columnas);
-			if(!botones[x][y].obstaculo){
+			if(!botones[x][y].obstaculo && !botones[x][y].robot 
+					&& !botones[x][y].rehen){
 				botones[x][y].actObstaculo();
 				numObstaculos--;
 			}
 			else
-				numObstaculos--;
-				
+				if(botones[x][y].obstaculo && botones[x][y].robot 
+					&& botones[x][y].rehen)
+				{
+					numObstaculos++;
+				}
 		}
 	}
 	
@@ -363,5 +357,5 @@ public class Matrix extends JPanel implements ActionListener{
 			}
 	}
 	
-	int max = 999999999;
+	//int max = 999999999;
 }	
