@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,6 +15,8 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
@@ -218,7 +222,7 @@ public class Matrix extends JPanel implements ActionListener{
 			// con su respectivo coste asociado
 		
 			//Casilla a la izquierda de la actual
-			if ((( robotPos[1] - 1) >= 0) && ((robotPos[1] - 1) <= columnas)
+			if ((( robotPos[1] - 1) >= 0) && ((robotPos[1] - 1) < columnas)
 					&& !botones[robotPos[0]][robotPos[1] - 1].obstaculo)
 			{
 				
@@ -228,7 +232,7 @@ public class Matrix extends JPanel implements ActionListener{
 					numCandidatos++;
 			}
 			//Casilla a la derecha dela actual
-			if (((robotPos[1] + 1) >= 0) && ((robotPos[1] + 1) <= columnas)
+			if (((robotPos[1] + 1) >= 0) && ((robotPos[1] + 1) < columnas)
 					&& !botones[robotPos[0]][robotPos[1] + 1].obstaculo)
 			{
 					lista_abierta[0][numCandidatos] = robotPos[0];	
@@ -237,7 +241,7 @@ public class Matrix extends JPanel implements ActionListener{
 					numCandidatos++;
 			}
 			//Casilla superior a la actual
-			if (((robotPos[0] - 1) >= 0) && ((robotPos[0] - 1) <= filas)
+			if (((robotPos[0] - 1) >= 0) && ((robotPos[0] - 1) < filas)
 					&& !botones[robotPos[0] - 1][robotPos[1]].obstaculo)
 			{
 					lista_abierta[0][numCandidatos] = robotPos[0] - 1;
@@ -246,7 +250,7 @@ public class Matrix extends JPanel implements ActionListener{
 					numCandidatos++;
 			}
 			//Casilla inferior a la actual
-			if (((robotPos[0] + 1) >= 0) && ((robotPos[0] + 1) <= filas)
+			if (((robotPos[0] + 1) >= 0) && ((robotPos[0] + 1) < filas)
 					&& !botones[robotPos[0] + 1][robotPos[1]].obstaculo)
 			{
 					lista_abierta[0][numCandidatos] = robotPos[0] + 1;
@@ -282,8 +286,27 @@ public class Matrix extends JPanel implements ActionListener{
 			// de parada)
 			// Poner casillas adyacentes en rehenCoor
 			if((lista_cerrada[0][iterSolucion] == rehenCoor[0]) 
-				&& (lista_cerrada[1][iterSolucion] == rehenCoor[1]))
+				&& (lista_cerrada[1][iterSolucion] == rehenCoor[1]) || 
+				botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].numVisitas >= (int)(0.5*filas))
 				{
+					if(botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].numVisitas >= (int)(0.5*filas))
+					{
+						JFrame error = new JFrame("Ventana de ERROR");
+						JLabel text_error = new JLabel();
+						JPanel pane = new JPanel();
+						text_error.setForeground(Color.red);
+						pane.add(text_error);
+						pane.setBackground(Color.LIGHT_GRAY);
+						text_error.setText("No existe camino posible");
+						error.add(pane);
+						
+						error.pack();
+						pane.setBounds(100, 100, 80, 30);
+						error.setLocationRelativeTo(null);
+						
+						error.setVisible(true);
+						repaint();
+					}
 					return false;
 				}
 			else{
@@ -294,7 +317,7 @@ public class Matrix extends JPanel implements ActionListener{
 			botones[robotPos[0]][robotPos[1]].actRobot();
 			botones[robotPos[0]][robotPos[1]].actVisitado();
 			
-			botones[robotPos[0]][robotPos[1]].estHeuristica = 1 + hDeX(lista_cerrada[0][iterSolucion],lista_cerrada[1][iterSolucion]);
+			botones[robotPos[0]][robotPos[1]].estHeuristica = 2 + hDeX(lista_cerrada[0][iterSolucion],lista_cerrada[1][iterSolucion]);
 			// Realizamos el "movimiento" visualmente
 			botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].ponerRobot = true;
 			botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].actRobot();

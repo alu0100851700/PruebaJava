@@ -31,6 +31,8 @@ public class Casilla extends JButton implements ActionListener{
 	public boolean robot = false;
 	public boolean rehen = false;
 	private boolean visitado = false;
+	//numero de veces visitado
+	public int numVisitas = 0;
 
 	public boolean ponerRobot = false;
 	public boolean ponerRehen = false;
@@ -125,6 +127,7 @@ public class Casilla extends JButton implements ActionListener{
 	public void actVisitado()
 	{
 		setIcon(new ImageIcon(huella.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
+		numVisitas++;
 		visitado = true;
 	}
 	
