@@ -12,6 +12,8 @@ public class ToolBarRobot extends JToolBar{
 	public JButton crearRehen;
 	public JButton reset;
 	public JButton iniciar; 
+	
+	
 	// Constructor
 	public ToolBarRobot() {
 		this.setBounds(100, 100, 450, 300);

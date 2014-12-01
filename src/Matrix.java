@@ -6,11 +6,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.TimerTask;
 import java.util.Vector;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
 
 
 public class Matrix extends JPanel implements ActionListener{
@@ -319,6 +319,25 @@ public class Matrix extends JPanel implements ActionListener{
 	}
 	/****** Repasar el bucle necesario despues de introducir un item en lista_cerrada, si no es la solución debería
 	 * 		seguir a partir de ese, eso FALTA********************************************************************/
+	
+	/** Funcion void que situara los obstaculos en el caso de escoger colocacion random **/
+	public void funcionRandom(int saturacion)
+	{
+		int x,y;
+		int numObstaculos = (int) (saturacion*0.01*filas*columnas);
+		for(int i = 0; i < numObstaculos; i++)
+		{
+			x = (int)(Math.random()*filas);
+			System.out.println("..............................."+x);
+			y = (int)(Math.random()*columnas);
+			if(botones[x][y].obstaculo = true)
+				numObstaculos--;
+			else
+				botones[x][y].obstaculo = true;
+		}
+		paintComponents(getGraphics());
+	}
+	
 	
 	void reset_listaAbierta()
 	{

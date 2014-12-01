@@ -53,6 +53,10 @@ public class Ventana extends JFrame implements ActionListener{
 		barraInicial.setVisible(false);
 		add(barraRobot, BorderLayout.NORTH);
 		}
+		if( evt.getSource() == barraInicial.botonRandom )
+		{
+			matriz.funcionRandom(Integer.parseInt(barraInicial.text_saturacion_rdm.getText()));	
+		}
 		if( evt.getSource() == barraRobot.crearRobot )
 		{
 			matriz.ponerRobot = true;
