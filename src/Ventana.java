@@ -27,6 +27,7 @@ public class Ventana extends JFrame implements ActionListener{
 		barraRobot.crearRehen.addActionListener(this);
 		barraRobot.reset.addActionListener(this);
 		barraRobot.iniciar.addActionListener(this);
+		barraRobot.botonRandom.addActionListener(this);
 		
 		timer = new Timer();
 		
@@ -37,7 +38,7 @@ public class Ventana extends JFrame implements ActionListener{
 		
 		setResizable(true);	//Se cambiara a false para no permitir que modifiquen el tama�o de la ventana
 		
-		setBounds(100, 100, 400, 68);
+		setBounds(100, 100, 500, 68);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -53,9 +54,9 @@ public class Ventana extends JFrame implements ActionListener{
 		barraInicial.setVisible(false);
 		add(barraRobot, BorderLayout.NORTH);
 		}
-		if( evt.getSource() == barraInicial.botonRandom )
+		if( evt.getSource() == barraRobot.botonRandom )
 		{
-			matriz.funcionRandom(Integer.parseInt(barraInicial.text_saturacion_rdm.getText()));	
+			matriz.funcionRandom(Integer.parseInt(barraRobot.text_saturacion_rdm.getText()));	
 		}
 		if( evt.getSource() == barraRobot.crearRobot )
 		{

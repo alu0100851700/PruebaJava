@@ -13,10 +13,13 @@ public class ToolBarRobot extends JToolBar{
 	public JButton reset;
 	public JButton iniciar; 
 	
+	// Para capturar el nivel de saturacion en %
+	JTextField text_saturacion_rdm;	private JLabel lbl_saturacion_rdm;	int saturacion_rdm;
+	public JButton botonRandom;
 	
 	// Constructor
 	public ToolBarRobot() {
-		this.setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 300);
 		
 		crearRobot = new JButton();		
 		crearRobot.setText("Poner Robot");
@@ -29,6 +32,13 @@ public class ToolBarRobot extends JToolBar{
 		
 		iniciar = new JButton();		
 		iniciar.setText("Iniciar");
+		
+		text_saturacion_rdm = new JTextField();
+		lbl_saturacion_rdm = new JLabel();	lbl_saturacion_rdm.setText("Saturacion:");
+		botonRandom = new JButton();	botonRandom.setText("Colocar obstaculos");
+		
+		add(lbl_saturacion_rdm);	add(text_saturacion_rdm);
+		add(botonRandom);
 		
 		setBounds(10,10,300,30);
 		add(crearRobot);

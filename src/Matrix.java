@@ -323,19 +323,22 @@ public class Matrix extends JPanel implements ActionListener{
 	/** Funcion void que situara los obstaculos en el caso de escoger colocacion random **/
 	public void funcionRandom(int saturacion)
 	{
+		reset();
 		int x,y;
 		int numObstaculos = (int) (saturacion*0.01*filas*columnas);
-		for(int i = 0; i < numObstaculos; i++)
+		while(numObstaculos > 0)
 		{
 			x = (int)(Math.random()*filas);
 			System.out.println("..............................."+x);
 			y = (int)(Math.random()*columnas);
-			if(botones[x][y].obstaculo = true)
+			if(!botones[x][y].obstaculo){
+				botones[x][y].actObstaculo();
 				numObstaculos--;
+			}
 			else
-				botones[x][y].obstaculo = true;
+				numObstaculos--;
+				
 		}
-		paintComponents(getGraphics());
 	}
 	
 	
