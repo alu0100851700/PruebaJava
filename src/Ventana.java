@@ -73,7 +73,7 @@ public class Ventana extends JFrame implements ActionListener{
 		if( evt.getSource() == barraRobot.iniciar )
 		{
 				matriz.initAlgoritmo();
-				timer.schedule(task,0,500);
+				timer.schedule(task,0,10);
 				//matriz.Aestrella();
 		}
 	}

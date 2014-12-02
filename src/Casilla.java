@@ -30,12 +30,15 @@ public class Casilla extends JButton implements ActionListener{
 	public boolean obstaculo = false;
 	public boolean robot = false;
 	public boolean rehen = false;
-	private boolean visitado = false;
+	public boolean visitado = false;
 
 	public boolean ponerRobot = false;
 	public boolean ponerRehen = false;
 	
-	// Posición de la casilla en la matriz
+	//Numero de visitas
+	int numVisitas = 0;
+	
+	// Posiciï¿½n de la casilla en la matriz
 	public int x = 0;
 	public int y = 0;
 	
