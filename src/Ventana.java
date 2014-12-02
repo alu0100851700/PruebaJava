@@ -74,15 +74,12 @@ public class Ventana extends JFrame implements ActionListener{
 		{
 				matriz.initAlgoritmo();
 				timer.schedule(task,0,100);
-				//matriz.Aestrella();
 		}
 	}
 	
 	TimerTask task = new TimerTask() {
         public void run()
         {
-        	//boolean s = matriz.iniciarAlgoritmo();
-        	//matriz.initAlgoritmo();
         	boolean s = matriz.Aestrella();
         	if (!s) {
         		timer.cancel();

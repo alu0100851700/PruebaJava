@@ -128,6 +128,7 @@ public class Casilla extends JButton implements ActionListener{
 	{
 		setIcon(new ImageIcon(huella.getImage().getScaledInstance(ancho, alto,Image.SCALE_SMOOTH)));
 		numVisitas++;
+		//estHeuristica++;
 		visitado = true;
 	}
 	

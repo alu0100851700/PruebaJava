@@ -127,8 +127,8 @@ public class Matrix extends JPanel implements ActionListener{
 		for(int i = 0; i < filas; i ++){	
 			for(int j = 0; j < columnas; j ++){
 					if(!botones[i][j].obstaculo && !botones[i][j].rehen){
-						//botones[i][j].estHeuristica = Math.abs(i-rehenCoor[0]) + Math.abs(j-rehenCoor[1]); 
-						botones[i][j].estHeuristica = Math.abs(i-rehenCoor[0]) + Math.abs(j-rehenCoor[1]) + Math.abs(Math.abs(i-rehenCoor[0]) - Math.abs(j-rehenCoor[1]));
+						botones[i][j].estHeuristica = Math.abs(i-rehenCoor[0]) + Math.abs(j-rehenCoor[1]); 
+						//botones[i][j].estHeuristica = Math.abs(i-rehenCoor[0]) + Math.abs(j-rehenCoor[1]) + Math.abs(Math.abs(i-rehenCoor[0]) - Math.abs(j-rehenCoor[1]));
 		}}}
 
 		for(int i = 0; i < filas; i ++){	
@@ -221,11 +221,22 @@ public class Matrix extends JPanel implements ActionListener{
 			// En la lista abierta meteremos todos aquellos candidatos
 			// con su respectivo coste asociado
 		
+		boolean estaEnLista = false;
+		
 			//Casilla a la izquierda de la actual
 			if ((( robotPos[1] - 1) >= 0) && ((robotPos[1] - 1) < columnas)
 					&& !botones[robotPos[0]][robotPos[1] - 1].obstaculo)
 			{
-				
+				for(int i = 0; i < numCandidatos; i++)
+				{
+					if((lista_abierta[0][i] == robotPos[0]) && 
+						(lista_abierta[1][i] == robotPos[1] -1))
+					{
+						lista_abierta[2][numCandidatos] = hDeX(robotPos[0],robotPos[1] -1 );
+						estaEnLista = true;
+						break;
+					}
+				}
 					lista_abierta[0][numCandidatos] = robotPos[0];
 					lista_abierta[1][numCandidatos] = robotPos[1] - 1;
 					lista_abierta[2][numCandidatos] = hDeX(robotPos[0],robotPos[1] - 1);
@@ -235,6 +246,16 @@ public class Matrix extends JPanel implements ActionListener{
 			if (((robotPos[1] + 1) >= 0) && ((robotPos[1] + 1) < columnas)
 					&& !botones[robotPos[0]][robotPos[1] + 1].obstaculo)
 			{
+				for(int i = 0; i < numCandidatos; i++)
+				{
+					if((lista_abierta[0][i] == robotPos[0]) && 
+						(lista_abierta[1][i] == robotPos[1]+1))
+					{
+						lista_abierta[2][numCandidatos] = hDeX(robotPos[0],robotPos[1]+1);
+						estaEnLista = true;
+						break;
+					}
+				}
 					lista_abierta[0][numCandidatos] = robotPos[0];	
 					lista_abierta[1][numCandidatos] = robotPos[1] + 1;
 					lista_abierta[2][numCandidatos] = hDeX(robotPos[0],robotPos[1] + 1);
@@ -244,6 +265,16 @@ public class Matrix extends JPanel implements ActionListener{
 			if (((robotPos[0] - 1) >= 0) && ((robotPos[0] - 1) < filas)
 					&& !botones[robotPos[0] - 1][robotPos[1]].obstaculo)
 			{
+				for(int i = 0; i < numCandidatos; i++)
+				{
+					if((lista_abierta[0][i] == robotPos[0]-1) && 
+						(lista_abierta[1][i] == robotPos[1]))
+					{
+						lista_abierta[2][numCandidatos] = hDeX(robotPos[0] - 1,robotPos[1]);
+						estaEnLista = true;
+						break;
+					}
+				}
 					lista_abierta[0][numCandidatos] = robotPos[0] - 1;
 					lista_abierta[1][numCandidatos] = robotPos[1];
 					lista_abierta[2][numCandidatos] = hDeX(robotPos[0] - 1,robotPos[1]);
@@ -253,6 +284,16 @@ public class Matrix extends JPanel implements ActionListener{
 			if (((robotPos[0] + 1) >= 0) && ((robotPos[0] + 1) < filas)
 					&& !botones[robotPos[0] + 1][robotPos[1]].obstaculo)
 			{
+				for(int i = 0; i < numCandidatos; i++)
+				{
+					if((lista_abierta[0][i] == robotPos[0]+1) && 
+						(lista_abierta[1][i] == robotPos[1]))
+					{
+						lista_abierta[2][numCandidatos] = hDeX(robotPos[0] + 1,robotPos[1]);
+						estaEnLista = true;
+						break;
+					}
+				}
 					lista_abierta[0][numCandidatos] = robotPos[0] + 1;
 					lista_abierta[1][numCandidatos] = robotPos[1];
 					lista_abierta[2][numCandidatos] = hDeX(robotPos[0] + 1,robotPos[1]);
@@ -277,7 +318,7 @@ public class Matrix extends JPanel implements ActionListener{
 			lista_cerrada[1][iterSolucion] = lista_abierta[1][posMinimo];	// valores que escogeremos 
 			lista_cerrada[2][iterSolucion] = lista_abierta[2][posMinimo];	// como item en la lista_cerrada
 			
-			lista_abierta[2][posMinimo] = 999999999;
+			lista_abierta[2][posMinimo] = INFINITO;	// <------------------------
 			
 			
 			//Comprobamos que la posicion recien introducida en 
@@ -287,9 +328,9 @@ public class Matrix extends JPanel implements ActionListener{
 			// Poner casillas adyacentes en rehenCoor
 			if((lista_cerrada[0][iterSolucion] == rehenCoor[0]) 
 				&& (lista_cerrada[1][iterSolucion] == rehenCoor[1]) || 
-				botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].numVisitas >= (int)(0.5*filas))
+				botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].numVisitas >= 5)
 				{
-					if(botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].numVisitas >= (int)(0.5*filas))
+					if(botones[lista_cerrada[0][iterSolucion]][lista_cerrada[1][iterSolucion]].numVisitas >= 5)
 					{
 						JFrame error = new JFrame("Ventana de ERROR");
 						JLabel text_error = new JLabel();
